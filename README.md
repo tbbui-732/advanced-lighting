@@ -1,5 +1,10 @@
 # Advanced OpenGL and Advanced Lighting
 
+## Purpose
+Continuation of writing an OpenGL rendering engine!
+Currently developing on Linux and keeping the build-system a bit simpler, which
+is why I'm only using a _Makefile_.
+
 ## Advanced OpenGL Topics
 - Depth testing
 - Stencil testing
