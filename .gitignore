@@ -1,3 +1,9 @@
+# binaries (except for Makefile!)
+*
+!*.*
+!*/
+!Makefile
+
 # Prerequisites
 *.d
 
