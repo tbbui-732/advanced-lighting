@@ -1,9 +1,20 @@
-CXX=g++
-WARNING_FLAGS=-Wall -Wextra -Werror -pedantic
-STD=-std=c++23
+# compiler and flags
+CXX = g++
+CXXFLAGS = -Iinclude -std=c++20
 
-main:
-	$(CXX) $(WARNING_FLAGS) $(STD) src/main.cpp -o build/main
+# source files
+SRC = src/main.cpp src/glad.c
 
+# output binary
+OUT = build/main
+
+# libraries
+LIBS = -Llib -lglfw3 -ldl -lm -lX11 -lpthread
+
+# build rule
+$(OUT): $(SRCS_CPP) $(SRCS_C)
+	$(CXX) $(CXXFLAGS) $(SRC) $(LIBS) -o $(OUT)
+
+# clean rule
 clean:
-	rm build/main
+	rm -f $(OUT)
