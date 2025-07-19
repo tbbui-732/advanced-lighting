@@ -1,24 +1,30 @@
 #include <iostream>
+#include <string>
+#include <string_view>
+#include <cstdlib>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+void log_error(std::string_view);
+
 int main(void) {
-    GLFWwindow* window;
+    if (!glfwInit()) {
+        log_error("GLFW failed to initialize");
+        return EXIT_FAILURE;
+    }
 
-    if (!glfwInit())
-        return -1;
-
-    window = glfwCreateWindow(640, 480, "test window", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(640, 480, "test window", NULL, NULL);
     if (!window) {
+        log_error("GLFW was unable to create a window");
         glfwTerminate();
-        return -1;
+        return EXIT_FAILURE;
     }
 
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD" << std::endl;
-        return -1;
+        log_error("Failed to initialize GLAD");
+        return EXIT_FAILURE;
     }
 
     while (!glfwWindowShouldClose(window)) {
@@ -28,5 +34,9 @@ int main(void) {
     }
 
     glfwTerminate();
-    return 0;
+    return EXIT_SUCCESS;
+}
+
+void log_error(std::string_view sv) {
+    std::cerr << sv << "\n";
 }
