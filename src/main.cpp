@@ -5,7 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-void log_error(std::string_view);
+GLFWwindow* initialize_render_window();
+void report_error(std::string_view);
 
 namespace constants {
     constexpr int width = 640;
@@ -13,27 +14,8 @@ namespace constants {
 };
 
 int main(void) {
-    // load glfw
-    if (!glfwInit()) {
-        log_error("GLFW failed to initialize");
-        return EXIT_FAILURE;
-    }
-
-    // create a window
-    GLFWwindow* window = glfwCreateWindow(
-            constants::width, constants::height, "test window", NULL, NULL);
-    if (!window) {
-        log_error("GLFW was unable to create a window");
-        glfwTerminate();
-        return EXIT_FAILURE;
-    }
-    glfwMakeContextCurrent(window);
-
-    // load glad
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        log_error("GLAD failed to initialize");
-        return EXIT_FAILURE;
-    }
+    GLFWwindow* window = initialize_render_window();
+    if (!window) return EXIT_FAILURE;
 
     // --- MAIN LOOP ---
     while (!glfwWindowShouldClose(window)) {
@@ -46,6 +28,40 @@ int main(void) {
     return EXIT_SUCCESS;
 }
 
-void log_error(std::string_view sv) {
+
+GLFWwindow* initialize_render_window() {
+    bool success = true;
+
+    // load glfw
+    if (!glfwInit()) {
+        report_error("GLFW failed to initialize");
+        success = false;
+    }
+
+    // create a window
+    GLFWwindow* window = glfwCreateWindow(
+            constants::width, constants::height, "test window", NULL, NULL);
+
+    if (!window) {
+        report_error("GLFW was unable to create a window");
+        glfwTerminate();
+        success = false;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    // load glad
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        report_error("GLAD failed to initialize");
+        success = false;
+    }
+  
+    if (success) {
+        return window;
+    }
+    return nullptr;
+}
+
+void report_error(std::string_view sv) {
     std::cerr << sv << "\n";
 }
