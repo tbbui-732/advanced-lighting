@@ -12,7 +12,7 @@ OUT = build/main
 LIBS = -Llib -lglfw3 -ldl -lm -lX11 -lpthread
 
 # build rule
-$(OUT): $(SRCS_CPP) $(SRCS_C)
+$(OUT): $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) $(LIBS) -o $(OUT)
 
 # clean rule
