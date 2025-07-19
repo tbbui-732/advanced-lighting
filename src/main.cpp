@@ -53,8 +53,11 @@ int main(void) {
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // TODO: render here
-        // ...
+        // render here
+        // TODO: set up shader program
+        // TODO: enable VAO
+        // NOTE: already wrote fragment and vertex shaders!
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -76,7 +79,7 @@ GLFWwindow* initialize_render_window() {
 
     // create a window
     GLFWwindow* window = glfwCreateWindow(
-            constants::width, constants::height, "test window", NULL, NULL);
+            constants::WIDTH, constants::HEIGHT, "test window", NULL, NULL);
 
     if (!window) {
         report_error("GLFW was unable to create a window");
