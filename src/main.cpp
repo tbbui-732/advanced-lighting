@@ -9,17 +9,53 @@ GLFWwindow* initialize_render_window();
 void report_error(std::string_view);
 
 namespace constants {
-    constexpr int width = 640;
-    constexpr int height = 480;
+    constexpr int WIDTH = 640;
+    constexpr int HEIGHT = 480;
+    constexpr int POSITION_COMPONENTS = 3;
 };
 
 int main(void) {
     GLFWwindow* window = initialize_render_window();
     if (!window) return EXIT_FAILURE;
 
+    // --- setting up buffers ---
+    float triangle_vertices[] = {
+        0.0f,  0.5f, 0.0f,      // top
+        -0.5f, -0.5f, 0.0f,     // bottom left
+        0.5f, -0.5f, 0.0f       // bottom right
+    };
+
+    // set up vertex array object
+    unsigned int VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+    glVertexAttribPointer(
+            0,
+            constants::POSITION_COMPONENTS,
+            GL_FLOAT,
+            GL_FALSE,
+            constants::POSITION_COMPONENTS * sizeof(float),
+            nullptr);
+    glEnableVertexAttribArray(0);
+
+    // set up vertex buffer object
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(
+            GL_ARRAY_BUFFER,
+            sizeof(triangle_vertices),
+            triangle_vertices,
+            GL_STATIC_DRAW);
+    // --- end of setting up  ---
+
     // --- MAIN LOOP ---
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // TODO: render here
+        // ...
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -55,7 +91,7 @@ GLFWwindow* initialize_render_window() {
         report_error("GLAD failed to initialize");
         success = false;
     }
-  
+
     if (success) {
         return window;
     }
